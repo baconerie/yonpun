@@ -29,7 +29,21 @@ fn main() {
             .with_title("Yonpun")
             .with_decorations(true)  // Hide window decorations (title bar)
             .with_transparency(false)
-    ))
+        )
+        .with_font(
+            "Merriweather",
+            Bytes::from_static(include_bytes!("./assets/merriweather.ttf"))
+        )
+        .with_font(
+            "Nunito Extra Bold",
+            Bytes::from_static(include_bytes!("./assets/nunito_extra_bold.ttf"))
+        )
+        .with_font(
+            "Open Sans",
+            Bytes::from_static(include_bytes!("./assets/open_sans.ttf"))
+        )
+
+    )
 }
 
 fn app() -> impl IntoElement {
