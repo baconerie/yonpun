@@ -42,12 +42,12 @@ impl Component for Topbar {
         rect()
             .width(Size::fill())
             .background(style::PRIMARY)
-            .height(Size::px(50.0))
+            .height(Size::px(75.0))
             .direction(Direction::Horizontal)
             .main_align(Alignment::SpaceAround)
             .cross_align(Alignment::Center)
             .child(
-                label().text("yonpun!").font_size(30.).font_family("Nunito").font_weight(FontWeight::EXTRA_BOLD)
+                label().text("yonpun!").font_size(40.).font_family("Nunito").font_weight(FontWeight::EXTRA_BOLD)
             )
             .child(TopbarButton::new("Dashboard"))
             .child(TopbarButton::new("To-do"))
@@ -81,7 +81,7 @@ impl Component for TopbarButton {
             .on_pointer_leave(move |_| *is_hovered.write() = false)
             .font_family("Merriweather")
             .font_weight(FontWeight::LIGHT)
-            .font_size(18.);
+            .font_size(30.);
             
         if radio.read().current_tab == self.text {
             container = container.child(components::Divider);
