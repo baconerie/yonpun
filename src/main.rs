@@ -21,14 +21,25 @@ mod components;
 mod core;
 
 use freya::prelude::*;
+use freya::radio;
+
+#[derive(Default, Clone)]
+struct AppState {
+    current_tab: String
+}
+
+#[derive(PartialEq, Eq, Clone, Debug, Copy, Hash)]
+enum AppStateChannels {
+    CurrentTab
+}
+impl radio::RadioChannel<AppState> for AppStateChannels {}
 
 fn main() {
-    // *Start* your app with a window and its root component
     launch(LaunchConfig::new()
         .with_window(
         WindowConfig::new(app)
             .with_title("Yonpun")
-            .with_decorations(true)  // Hide window decorations (title bar)
+            .with_decorations(true)
             .with_transparency(false)
         )
         .with_font(
@@ -48,14 +59,23 @@ fn main() {
 }
 
 fn app() -> impl IntoElement {
-    // Declare the *UI*
-    rect()
+    radio::use_init_radio_station::<AppState, AppStateChannels>(|| AppState{current_tab: String::from("Dashboard")});
+    let radio = radio::use_radio(AppStateChannels::CurrentTab);
+    let mut res  = rect()
         .content(Content::Fit)
         .width(Size::fill())
         .height(Size::fill())
         .background(style::BACKGROUND)
         .color(Color::WHITE)
         .font_family(style::FONT_FAMILY)
-        .child(components::Topbar)
-        .child(components::ToDo)
+        .child(components::Topbar);
+
+    if radio.read().current_tab == "Dashboard" {
+        res = res.child(components::Dashboard);
+    }
+    else if radio.read().current_tab == "To-do" {
+        res = res.child(components::ToDo);
+    }
+
+    res
 }

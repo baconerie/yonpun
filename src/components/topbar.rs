@@ -19,26 +19,13 @@ Yonpun. If not, see <https://www.gnu.org/licenses/>.
 use freya::prelude::*;
 use freya::radio;
 
-use crate::{style, components};
+use crate::{style, components, AppStateChannels};
 
-#[derive(Default, Clone)]
-struct CurrentTabState {
-    current_tab: String
-}
-
-#[derive(PartialEq, Eq, Clone, Debug, Copy, Hash)]
-enum CurrentTabChannel {
-    CurrentTab
-}
-
-impl radio::RadioChannel<CurrentTabState> for CurrentTabChannel {}
 
 #[derive(PartialEq)]
 pub struct Topbar;
 impl Component for Topbar {
     fn render(&self) -> impl IntoElement {
-        radio::use_init_radio_station::<CurrentTabState, CurrentTabChannel>(|| CurrentTabState{current_tab: String::from("Dashboard")});
-
         rect()
             .width(Size::fill())
             .background(style::PRIMARY)
@@ -67,8 +54,9 @@ impl TopbarButton {
 }
 impl Component for TopbarButton {
     fn render(&self) -> impl IntoElement {
-        let mut radio = radio::use_radio(CurrentTabChannel::CurrentTab);
-        let mut is_hovered = use_state(| | false);
+        let mut radio = radio::use_radio(AppStateChannels::CurrentTab);
+        let mut is_hovered = use_state(|| false);
+
         let text_ref = self.text;
 
         let mut container: Rect = rect()
