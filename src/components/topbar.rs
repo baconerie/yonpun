@@ -1,5 +1,5 @@
 /*
-Copyright 2026 baconerie
+Copyright 2026 gakuseh
 
 This file is part of Yonpun.
 
